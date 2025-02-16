@@ -22,7 +22,7 @@ app.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       // If 401 Unauthorized error occurs, redirect to sign-in page
-      window.location.href = "/signin"; // Redirect to signin page
+      window.location.href = "#/signin"; // Redirect to signin page
       toast.error("please login again");
     }
     return Promise.reject(error); // Propagate error

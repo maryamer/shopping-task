@@ -2,15 +2,17 @@ import { HiArrowRightOnRectangle } from "react-icons/hi2";
 import Cookies from "js-cookie"; // Import js-cookie
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function Logout() {
+const [isFirst,setIsFirst]=useState(true)
   useEffect(() => {
     const token = Cookies.get("Authorization");
-    if (!token) {
+
+    if (!token && !isFirst) {
       navigate("/signin");
     }
-  }, []);
+  }, [isFirst]);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const handlelogout = () => {
@@ -18,6 +20,7 @@ function Logout() {
     localStorage.removeItem("userInfo");
     queryClient.removeQueries();
     window.location.reload();
+    setIsFirst(false)
   };
   return (
     <button onClick={handlelogout}>

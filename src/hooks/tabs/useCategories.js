@@ -12,6 +12,7 @@ export default function useCategories(page) {
     queryKey: [{ query: "categories", page }], // Using object form
     queryFn: () => getCategoryApi(page),
     retry: 1,
+    onError:(err)=>console.log('ee',err),
     keepPreviousData: true, // To keep data from the previous page while loading the new one
   });
 }
