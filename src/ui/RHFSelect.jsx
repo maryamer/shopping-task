@@ -6,7 +6,7 @@ function RHFSelect({
   required,
   errors,
   defaultValue = {},
-  icon, // New prop for the icon
+  icon,  
 }) {
   return (
     <div className="relative">
@@ -17,7 +17,7 @@ function RHFSelect({
         {label} {required && <span className="text-error">*</span>}
       </label>
       <div className="mt-1 relative">
-        {/* Icon inside the select field */}
+ 
         {icon && (
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
             {icon}
@@ -29,7 +29,7 @@ function RHFSelect({
           {...register(name)}
           className={`block w-full px-3 py-2 textField__input rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm ${
             icon && "pl-10"
-          }`} // Updated styles to match TextField
+          }`}
         >
           <option value="">{`Select a ${label}`}</option>
           {options?.map((option) => (

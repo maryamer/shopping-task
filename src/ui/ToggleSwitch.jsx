@@ -11,7 +11,7 @@ export default function ToggleSwitch({ id, checked, onChange }) {
         id={id}
         className="sr-only"
         checked={checked}
-        onChange={onChange} // Toggling the checked state here
+        onChange={onChange} 
       />
       <span
         className={`absolute left-1 w-4 h-4 bg-white rounded-full shadow-md transition-transform ${

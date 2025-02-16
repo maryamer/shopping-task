@@ -1,5 +1,4 @@
 import { CiSearch, CiFilter } from "react-icons/ci";
-// import Table from "../../../ui/Table"; // Assuming Table is in the same directory
 export default function ProductsTable({ body, footer, setOpen, children }) {
   return (
     <div className="overflow-hidden relative mt-4 border border-secondary-200 rounded-xl">
@@ -18,8 +17,7 @@ export default function ProductsTable({ body, footer, setOpen, children }) {
           </button>
         </div>
       </div>
-
-      {/* Ensure table alignment */}
+ 
       <div className="overflow-x-auto h-[50vh] max-w-[98vw]">
         <table className="w-full table-auto border-collapse">
           <thead className="bg-gray-100">

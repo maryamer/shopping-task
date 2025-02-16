@@ -1,13 +1,11 @@
-import React from "react";
+ 
 import logo from "../assets/svg/logo.svg"; // Adjust the path accordingly
-
-// Utility to handle position alignment
+ 
 const positionClasses = {
   start: "justify-start",
   center: "justify-center",
 };
-
-// Utility for different logo sizes
+ 
 const logoSizeMap = {
   lg: {
     fontSize: "text-3xl",
@@ -22,10 +20,9 @@ const logoSizeMap = {
     imageSize: "w-5 ",
   },
 };
-
-// Logo Component
+ 
 function Logo({ position = "center", size = "md" }) {
-  // Dynamically select the logo component
+  
   return (
     <div
       className={`flex gap-2 items-center  ${logoSizeMap[size].fontSize} ${positionClasses[position]}`}

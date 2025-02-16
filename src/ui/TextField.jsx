@@ -8,7 +8,7 @@ function TextField({
   type = "text",
   required,
   errors,
-  icon, // New prop for the icon
+  icon,  
 }) {
   return (
     <div className={`relative ${className}`}>
@@ -19,11 +19,10 @@ function TextField({
         {label} {required && <span className="text-error">*</span>}
       </label>
       <div className="mt-1 relative">
-        {/* Icon inside the input field */}
+    
         {icon && (
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
             {icon}
-            {/* You can customize the icon here */}
           </div>
         )}
         <input

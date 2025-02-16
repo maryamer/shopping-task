@@ -1,51 +1,48 @@
 import http from "./httpService"; // Assuming `http` is an axios instance.
+// const BASE_URL = 'https://assignment.rahkartest.ir/api/'
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+console.log('BASE_URL',BASE_URL)
 export function getCategoryApi(page = 1) {
   return http
-    .get("https://assignment.rahkartest.ir/api/categories", {
-      params: { page }, // Pass the page number as a query parameter
+    .get("categories", {
+      params: { page }, 
     })
     .then((data) => data?.data)
     .catch((err) => {
-      console.error("Error fetching categories:", err);
       throw err;
     });
 }
 
 export async function removeCategoryApi(id) {
   return http
-    .delete(`https://assignment.rahkartest.ir/api/categories/${id}`)
+    .delete(`categories/${id}`)
     .then((data) => data?.data)
     .catch((err) => {
-      console.error("Error removing categories:", err?.response?.data?.message);
       throw err;
     });
 }
 
 export async function addCategoryApi(title) {
   const encodedTitle = encodeURIComponent(title);
-  console.log(title, encodedTitle);
   return http
     .post(
-      `https://assignment.rahkartest.ir/api/categories?title=${encodedTitle}`
+      `categories?title=${encodedTitle}`
     )
     .then((data) => data?.data)
     .catch((err) => {
-      console.error("Error removing categories:", err);
       throw err;
     });
 }
+
 export async function updateCategoryApi({ title, id }) {
-  console.log("iddd", id);
   const encodedTitle = encodeURIComponent(title);
-  console.log(title, encodedTitle);
   return http
     .put(
-      `https://assignment.rahkartest.ir/api/categories/${id}?title=${encodedTitle}`
+      `categories/${id}?title=${encodedTitle}`
     )
     .then((data) => data?.data)
     .catch((err) => {
-      console.error("Error removing categories:", err);
       throw err;
     });
 }

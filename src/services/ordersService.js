@@ -1,10 +1,10 @@
-// categoryService.js
-import http from "./httpService"; // Assuming `http` is an axios instance.
+ 
+import http from "./httpService"; 
 
 export default function getOrdersDataApi(data) {
   return http
-    .get("https://assignment.rahkartest.ir/api/orders", {
-      params: data, // Pass the page number as a query parameter
+    .get("orders", {
+      params: data, 
     })
     .then((data) => data?.data)
     .catch((err) => {

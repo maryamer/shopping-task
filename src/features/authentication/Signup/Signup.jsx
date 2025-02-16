@@ -35,22 +35,21 @@ function SingupForm() {
     setError(null); // Clear previous errors
 
     try {
-      // Make the API request to your backend
+       
       const response = await axios.post(
         "https://assignment.rahkartest.ir/api/register",
         values
-      ); // Replace with your API endpoint
+      );  
       console.log("Registration success:", response.data);
       toast.success("successfully registered");
       navigate("/signin");
-      // Handle successful registration here, e.g., redirect, show success message, etc.
+      
     } catch (err) {
       console.error("Registration failed:", err);
       toast.error("Registration failed. Please try again.");
-
       setError("Registration failed. Please try again.");
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);  
     }
   };
 

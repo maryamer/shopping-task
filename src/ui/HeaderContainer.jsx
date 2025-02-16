@@ -1,8 +1,7 @@
 import { HiPlus } from "react-icons/hi";
-// import useUser from "../features/authentication/useUser";
 import Breadcrumbs from "./Breadcrumbs";
 import Button from "./Button";
-// import { useState } from "react";
+
 
 function HeaderContainer({
   desc,
@@ -11,9 +10,7 @@ function HeaderContainer({
   title,
   breadcrumbs = [],
 }) {
-  // const { mutateAsync: addCategory, isPending: isPendingAdd } =
-  //   useAddCategory();
-  // const [open, setOpen] = useState(false);
+
   const { isLoading } = {};
 
   return (
@@ -43,8 +40,7 @@ function HeaderContainer({
         <div className="w-full py-2">
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
-        {/* <UserAvatar />
-        <HeaderContainerMenu /> */}
+  
       </div>
       <span className="hr w-[99%] "></span>
     </div>

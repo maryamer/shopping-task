@@ -1,32 +1,38 @@
-// categoryService.js
-import http from "./httpService"; // Assuming `http` is an axios instance.
+ 
+import http from "./httpService"; 
+
 
 export async function getProductsApi(data) {
   return http
-    .get("https://assignment.rahkartest.ir/api/products", {
-      params: data, // Pass the page number as a query parameter
+    .get("products", {
+      params: data, 
     })
     .then((data) => data?.data)
     .catch((err) => {
-      console.error("Error fetching categories:", err);
       throw err;
     });
 }
+export default async function getCategoryApi(data) {
+  return http.get("products", {
+      params: data, 
+    }).then(({ data }) => data.data);
+}
+
+
+
 export async function removeProductsApi(id) {
   return http
-    .delete(`https://assignment.rahkartest.ir/api/products/${id}`)
+    .delete(`products/${id}`)
     .then((data) => data?.data)
     .catch((err) => {
-      console.error("Error removing product:", err);
       throw err;
     });
 }
 
 export async function addProductApi(data) {
-  console.log("formdata", data);
   try {
     const response = await http.post(
-      "https://assignment.rahkartest.ir/api/products",
+      "products",
       data,
       {
         headers: {
@@ -41,14 +47,13 @@ export async function addProductApi(data) {
   }
 }
 export async function UpdateProductApi(data) {
-  console.log("formdata", data);
   try {
     const response = await http.post(
-      "https://assignment.rahkartest.ir/api/products/" + data?.id,
+      "products/" + data?.id,
       data,
       {
         headers: {
-          "Content-Type": "multipart/form-data", // Important for file uploads
+          "Content-Type": "multipart/form-data", 
         },
       }
     );
@@ -61,7 +66,7 @@ export async function UpdateProductApi(data) {
 
 export async function toggleProductApi(id) {
   return http
-    .patch(`https://assignment.rahkartest.ir/products/toggle?product_id=${id}`)
+    .patch(`products/toggle?product_id=${id}`)
     .then((data) => data?.data)
     .catch((err) => {
       console.error("Error toggle product:", err);
