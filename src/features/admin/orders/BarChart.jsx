@@ -24,6 +24,9 @@ const BarChart = ({ data, type = "bar" }) => {
           columnWidth: "40%", // عرض نازک‌تر ستون‌ها
         },
       },
+       dataLabels: {
+      enabled: false, // Disable the numbers on circles
+    },
       xaxis: {
         categories: data.records.map((record) => ` ${record.id}`),
       },

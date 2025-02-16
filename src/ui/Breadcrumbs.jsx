@@ -17,7 +17,7 @@ export default function Breadcrumbs({ breadcrumbs }) {
           <li
             key={breadcrumb.href}
             aria-current={breadcrumb.active}
-            className={`items-center text-sm ${
+            className={`items-center text-md ${
               breadcrumb.active
                 ? "text-primary-700 font-medium"
                 : "text-secondary-500"

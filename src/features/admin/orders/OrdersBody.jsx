@@ -14,9 +14,9 @@ const OrdersBody = () => {
 
   return (
     <>
-      <div className="border rounded-xl  p-5">
-        <div className="flex border-b flex-col md:flex-row gap-4 md:gap-0  w-full items-center pb-4 mb-2 bt-2 justify-between">
-          <div className="w-full flex  items-center px-2   gap-3">
+      <div className="border rounded-xl lg:p-5">
+        <div className="flex border-b flex-col md:flex-row gap-4 md:gap-0  w-full items-center pb-4 mt-4 lg:mt-0 mb-2 bt-2 justify-between">
+          <div className="w-full hidden lg:flex  items-center px-2   gap-3">
             <button
               className="border p-2.5 rounded-lg"
               onClick={() => setIsArea((prev) => !prev)}

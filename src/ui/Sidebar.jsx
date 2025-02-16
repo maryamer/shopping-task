@@ -17,7 +17,7 @@ function Sidebar({ children, isOpen, setIsOpen }) {
         onClick={() => setIsOpen(false)}
       ></div>
       <div
-        className={`bg-secondary-0 flex flex-col justify-between transition-all duration-150 ease-in-out h-screen w-9/12 lg:w-full lg:relative  row-start-1 absolute lg:left-0  row-span-2 border-l border-secondary-200 p-4 ${
+        className={`bg-secondary-0 flex flex-col justify-between transition-all duration-150 ease-in-out h-screen w-9/12 md:w-1/3 lg:w-full lg:relative  row-start-1 absolute lg:left-0  row-span-2 border-l border-secondary-200 p-4 ${
           isOpen ? "left-0 z-50" : "-left-[100%]  lg:left-0"
         }`}
       >

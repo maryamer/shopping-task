@@ -2,7 +2,6 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import NotFound from "./pages/NotFound";
-import { DarkModeProvier } from "./context/DarkModeContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AdminLayout from "./features/admin/AdminLayout";
 import CategoriesTab from "./pages/tabs/CategoriesTab";
@@ -15,7 +14,7 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <DarkModeProvier>
+
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <Toaster />
@@ -37,7 +36,7 @@ function App() {
           </Routes>
         </HashRouter>
       </QueryClientProvider>
-    </DarkModeProvier>
+
   );
 }
 

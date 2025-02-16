@@ -1,12 +1,10 @@
 import ProductsTable from "../products/ProductsTable";
 import Loading from "../../../ui/Loading";
-import useProductsBody from "../../../hooks/tabs/useProductsBody";
-import TableRow from "../products/TableRow";
+import ProductsTableRow from "./ProductsTableRow";
 import Pagination from "../../../ui/Pagination";
 import FilterProductModal from "./FilterProductModal";
 
-function ProductsBody() {
-  const {
+function ProductsBody({
     setCurrentPage,
     currentPage,
     isLoading,
@@ -21,10 +19,11 @@ function ProductsBody() {
     register,
     handleSubmit,
     categories,
-  } = useProductsBody();
+  }) {
 
-  if (isLoading || isPending) return <Loading />;
 
+  // if (isLoading || isPending) return <Loading />;
+const loading = isLoading || isPending
   return (
     <div>
       <ProductsTable
@@ -36,8 +35,8 @@ function ProductsBody() {
             setCurrentPage={setCurrentPage}
           />
         }
-        body={products?.map((product) => (
-          <TableRow
+        body={loading ? <Loading />:products?.map((product) => (
+          <ProductsTableRow
             key={product?.id}
             product={product}
             categories={categories}

@@ -1,3 +1,4 @@
+
 import Button from "../../../ui/Button";
 import Modal from "../../../ui/Modal";
 import RHFSelect from "../../../ui/RHFSelect";
@@ -22,6 +23,17 @@ function FilterProductModal({
           options={categoryOptions}
           errors={errors.category_id && errors.category_id.message}
         />
+            <RHFSelect
+        label="Status"
+        name="is_active"
+        register={register}
+        options={[
+          { value: "1", label: "Active" },
+          { value: "0", label: "Inactive" },
+        ]}
+        errors={errors}
+        defaultValue="1"
+      />
         <TextField
           label="Search"
           name="search"
@@ -30,27 +42,7 @@ function FilterProductModal({
           register={register}
           type="text"
         />
-        <div>
-          <label
-            htmlFor="is_active"
-            className="block text-sm text-secondary-700 font-bold mb-2"
-          >
-            Status
-          </label>
-          <select
-            id="is_active"
-            {...register("is_active")}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          >
-            <option value="1">Active</option>
-            <option value="0">Inactive</option>
-          </select>
-          {errors.is_active && (
-            <span className="text-red-600 text-xs">
-              {errors.is_active.message}
-            </span>
-          )}
-        </div>
+    
 
         <div>
           <label

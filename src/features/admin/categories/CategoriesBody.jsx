@@ -2,7 +2,8 @@ import { useState } from "react";
 
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { HiOutlineTrash } from "react-icons/hi";
-import { CiEdit } from "react-icons/ci";
+import { MdOutlineModeEditOutline } from "react-icons/md";
+
 import CategoryActionModal from "../categories/CategoryActionModal";
 
 import { IoIosInformationCircleOutline } from "react-icons/io";
@@ -45,7 +46,7 @@ function CategoriesBody() {
       <button
         key={page}
         onClick={() => page !== "..." && handlePageChange(page)}
-        className={`px-1 py-2 ${
+        className={`w-9 h-9 aspect-square ${
           page === currentPage ? " bg-secondary-100" : ""
         } rounded-md`}
         disabled={page === "..."}
@@ -103,7 +104,7 @@ export function PaginationCard({
 }) {
   return (
     <div
-      className={`absolute bg-white left-1/2 w-full -translate-x-1/2 md:bottom-0 bottom-2 flex justify-between p-4 mt-4 ${classNames}`}
+      className={`absolute bg-white left-1/2 w-full -translate-x-1/2 lg:bottom-0 bottom-2 flex justify-between p-4 mt-4 ${classNames}`}
     >
       <button
         onClick={() => handlePageChange(currentPage - 1)}
@@ -141,7 +142,7 @@ function CategoryCard({ category, currentPage }) {
 
   return (
     <div
-      className={`px-2 py-2.5 flex text-sm justify-between rounded-md bg-white ${
+      className={`px-2 py-2.5 flex max-h-16 items-center text-sm justify-between rounded-md bg-white ${
         (isLoading || isPending) && "opacity-50"
       }`}
     >
@@ -182,7 +183,7 @@ function CategoryCard({ category, currentPage }) {
           className=" bg-secondary-100 rounded-md p-1"
           onClick={() => setOpen(true)}
         >
-          <CiEdit className="w-5 h-5 text-secondary-500" />
+          <MdOutlineModeEditOutline className="w-5 h-5 text-secondary-500" />
         </button>
         <button
           className=" rounded-md p-1 bg-red-100"

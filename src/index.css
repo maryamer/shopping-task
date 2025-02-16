@@ -138,6 +138,10 @@ body {
   user-select: none;
   background-color: rgb(var(--background-app-rgb));
 }
+option{
+  font-family: "Vazir" !important;
+
+}
 
 * {
   box-sizing: border-box;

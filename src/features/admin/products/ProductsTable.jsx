@@ -1,8 +1,8 @@
 import { CiSearch, CiFilter } from "react-icons/ci";
-
+// import Table from "../../../ui/Table"; // Assuming Table is in the same directory
 export default function ProductsTable({ body, footer, setOpen, children }) {
   return (
-    <div className="overflow-hidden  mt-4 border border-secondary-200 rounded-xl">
+    <div className="overflow-hidden relative mt-4 border border-secondary-200 rounded-xl">
       {children}
       <div className="flex justify-between items-center p-4">
         <div className="text-xl font-semibold">Product List</div>
@@ -18,28 +18,24 @@ export default function ProductsTable({ body, footer, setOpen, children }) {
           </button>
         </div>
       </div>
-      <div className="overflow-x-auto  max-w-[98vw]">
-        <div className="relative">
-          <table className="min-w-full table-fixed">
-            <thead className="bg-secondary-200 sticky top-0 z-10">
-              <tr>
-                <th className="th w-32">Product Name</th>
-                <th className="th w-24">Price</th>
-                <th className="th w-24">Category</th>
-                <th className="th w-20">Status</th>
-                <th className="th md:w-20 w-36">Date</th>
-                <th className="th lg:w-14 w-24"></th>
-              </tr>
-            </thead>
-          </table>
 
-          <div className=" max-h-[300px]">
-            <table className="min-w-full table-fixed">
-              <tbody>{body}</tbody>
-            </table>
-          </div>
-        </div>
+      {/* Ensure table alignment */}
+      <div className="overflow-x-auto h-[50vh] max-w-[98vw]">
+        <table className="w-full table-auto border-collapse">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="th min-w-[150px] whitespace-nowrap px-4 py-2 text-left">Product Name</th>
+              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left">Price</th>
+              <th className="th min-w-[120px] whitespace-nowrap px-4 py-2 text-left">Category</th>
+              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left">Status</th>
+              <th className="th min-w-[150px] whitespace-nowrap px-4 py-2 text-left">Date</th>
+              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left"></th>
+            </tr>
+          </thead>
+          <tbody className="divide-y">{body}</tbody>
+        </table>
       </div>
+
       <div className="bg-secondary-0 p-2 text-center">{footer}</div>
     </div>
   );
