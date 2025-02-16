@@ -5,22 +5,25 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function Logout() {
-const [isFirst,setIsFirst]=useState(true)
+  const [isFirst, setIsFirst] = useState(true);
   useEffect(() => {
     const token = Cookies.get("Authorization");
 
     if (!token && !isFirst) {
-      navigate("/signin");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 1000);
     }
   }, [isFirst]);
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const handlelogout = () => {
     Cookies.remove("Authorization");
     localStorage.removeItem("userInfo");
     queryClient.removeQueries();
-    window.location.reload();
-    setIsFirst(false)
+    // window.location.reload();
+    setIsFirst(false);
   };
   return (
     <button onClick={handlelogout}>

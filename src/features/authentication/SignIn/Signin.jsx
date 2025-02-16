@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 import Logo from "../../../ui/Logo";
 import Cookies from "js-cookie"; // Import js-cookie
 import http from "../../../services/httpService";
-const tokenFromCookies = Cookies.get("Authorization"); // Replace 'Authorization' with the actual name of your cookie
 
 const schema = yup
   .object({
@@ -20,12 +19,15 @@ const schema = yup
   .required();
 
 function SinginForm() {
-  useEffect(() => {
-    if (tokenFromCookies) {
-      navigate("/admin/category");
-    }
-  }, []);
+  const [isFirst, setIsFirst] = useState(true);
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!isFirst) {
+      setTimeout(() => {
+        navigate("/admin/category");
+      }, 1000);
+    }
+  }, [isFirst]);
   const [isLoading, setIsLoading] = useState(false); // State for loading
   const [error, setError] = useState(null); // State for errors
   console.log(error);
@@ -36,27 +38,22 @@ function SinginForm() {
   } = useForm({ resolver: yupResolver(schema), mode: "onTouched" });
 
   const onSubmit = async (values) => {
-    setIsLoading(true); // Start loading
-    setError(null); // Clear previous errors
+    setIsLoading(true);
+    setError(null);
 
     try {
-      // Make the API request to your backend
       const response = await http.post(
         "https://assignment.rahkartest.ir/api/login",
         values
-      ); // Replace with your API endpoint
+      );
       console.log("Login success:", response.data);
       const { token } = response?.data || {};
       const { user } = response?.data || {};
       user && localStorage.setItem("userInfo", JSON.stringify(user));
       console.log(user, "user");
-      // Set the token in a cookie with an expiration time of 1 hour (for example)
       Cookies.set("Authorization", `Bearer ${token}`, { expires: 4 / 24 }); // Expires in 1 hour
-
       toast.success("Successfully logged in!");
-      window.location.reload();
-
-      // Handle successful login here, e.g., redirect, show success message, etc.
+      setIsFirst(false);
     } catch (err) {
       console.error("Login failed:", err);
       toast.error("Login failed. Please try again.");
