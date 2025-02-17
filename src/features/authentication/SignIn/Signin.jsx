@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../../../ui/Button";
 import { AiOutlineMail } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import toast from "react-hot-toast";
 import Logo from "../../../ui/Logo";
 import Cookies from "js-cookie"; // Import js-cookie
@@ -19,15 +19,15 @@ const schema = yup
   .required();
 
 function SinginForm() {
-  const [isFirst, setIsFirst] = useState(true);
+  // const [isFirst, setIsFirst] = useState(true);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!isFirst) {
-      setTimeout(() => {
-        navigate("/admin/category");
-      }, 1000);
-    }
-  }, [isFirst]);
+  // useEffect(() => {
+  //   if (!isFirst) {
+  //     setTimeout(() => {
+  //       navigate("/admin/category");
+  //     }, 1000);
+  //   }
+  // }, [isFirst]);
   const [isLoading, setIsLoading] = useState(false); // State for loading
   const [error, setError] = useState(null); // State for errors
   console.log(error);
@@ -53,10 +53,11 @@ function SinginForm() {
       console.log(user, "user");
       Cookies.set("Authorization", `Bearer ${token}`, { expires: 4 / 24 }); // Expires in 1 hour
       toast.success("Successfully logged in!");
-      setIsFirst(false);
+       navigate("/admin/category");
+
     } catch (err) {
-      console.error("Login failed:", err);
-      toast.error("Login failed. Please try again.");
+      console.error("Login failed:", err.response?.data?.message);
+      toast.error("Login failed:"+ err.response?.data?.message)
       setError("Login failed. Please try again.");
     } finally {
       setIsLoading(false); // Stop loading
@@ -78,7 +79,7 @@ function SinginForm() {
             placeholder={"Type Here"}
             errors={errors}
             register={register}
-            type="text"
+            type="email"
           />
           <TextField
             label="Password"

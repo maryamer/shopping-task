@@ -15,8 +15,11 @@ import NotFoundAnyItem from "../../../ui/NotFoundAnyItem";
 import Modal from "../../../ui/Modal";
 import ConfirmDelete from "../../../ui/ConfirmDelete";
 
+
 function CategoriesBody() {
   const [currentPage, setCurrentPage] = useState(1);
+
+
 
   // Pass currentPage to the hook
   const { data, isLoading } = useCategories(currentPage); // Pass currentPage to the hook

@@ -1,30 +1,44 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import toast from "react-hot-toast";
 
 // const BASE_URL = import.meta.env.VITE_BASE_URL;
 const BASE_URL = "https://assignment.rahkartest.ir/api/";
-const token = Cookies.get("Authorization");  
+const token = Cookies.get("Authorization");
 
- 
 const app = axios.create({
   baseURL: BASE_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, 
+    Authorization: `Bearer ${token}`,
   },
 });
 
 app.interceptors.response.use(
   (response) => response, 
-  (error) => {
+  async (error) => {
     if (error.response && error.response.status === 401) {
-      // If 401 Unauthorized error occurs, redirect to sign-in page
-      window.location.href = "#/signin"; // Redirect to signin page
-      toast.error("please login again");
+      const originalRequest = error.config;
+const isLogin =originalRequest.url.endsWith("categories")
+      // If request URL ends with 'categories' and it's the first retry
+      if (!isLogin && !originalRequest._retry) {
+        originalRequest._retry = true; // Mark request as retried
+
+        try {
+          console.log("Retrying request:", originalRequest.url);
+          return await app(originalRequest); // Retry the request once
+        } catch (retryError) {
+          console.error("Retry failed:", retryError);
+        }
+      }
+
+      // If login request fails, do not redirect
+      if (!isLogin) {
+        window.location.href = "#/signin"; // Redirect to sign-in
+      }
     }
-    return Promise.reject(error);  
+
+    return Promise.reject(error);
   }
 );
 
