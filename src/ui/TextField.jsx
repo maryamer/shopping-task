@@ -32,6 +32,7 @@ function TextField({
           type={type}
           placeholder={placeholder}
           autoComplete="off"
+          dir="ltr"
         />
       </div>
       {errors && errors[name] && (

@@ -17,8 +17,7 @@ function useProductsBody() {
       category_id,
       search,
       from,
-      to,
-      ...(from && { "price_range[0]": from }),
+      ...(from && { "price_range[0]": {'price_range[0]':'0'} }),
       ...(to && { "price_range[1]": to }),
     };
 
@@ -43,14 +42,17 @@ function useProductsBody() {
   };
 
   const handleChangeParams = (newParams) => {
-    console.log("newParams", newParams);
+    // filter params by empty values
     const filteredParams = Object.fromEntries(
       Object.entries(newParams).filter(([, value]) => value)
     );
-    console.log("filtered", filteredParams);
-
-    setMySearchParams({ ...newParams });
-
+    const{from,to} =filteredParams
+    searchParams.set('price_range[0]',from || '0')
+    to && searchParams.set('price_range[1]',to)
+    setMySearchParams({ ...filteredParams,
+      ...( { "price_range[0]": from || '0' }),
+      ...(to && { "price_range[1]": to }), });
+// update searchparams value 
     Object.entries(newParams).forEach(([key, value]) => {
       if (value) {
         searchParams.set(key, value);
@@ -59,10 +61,12 @@ function useProductsBody() {
       }
     });
 
+    console.log('searchParams',searchParams)// update searchparams
     setSearchParams(searchParams);
   };
 
   useEffect(() => {
+    // refetch data after search params change
     refetch();
   }, [mySearchParams]);
 
