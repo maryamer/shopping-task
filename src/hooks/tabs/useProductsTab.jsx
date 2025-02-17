@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 
 function useProductsBody() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const filter = ["is_active", "category_id", "search", "page", "from", "to"];
-  const [is_active, category_id, search, defaultPage, from, to] = filter.map(
-    (param) => searchParams.get(param)
-  );
+ const filter = ["is_active", "category_id", "search", "page", "price_range[0]", "price_range[1]"];
+const [is_active, category_id, search, defaultPage, priceRange0, priceRange1] = filter.map(
+  (param) => searchParams.get(param)
+);
 
   const [mySearchParams, setMySearchParams] = useState(() => {
     const params = {
@@ -16,9 +16,8 @@ function useProductsBody() {
       is_active: is_active,
       category_id,
       search,
-      from,
-      ...(from && { "price_range[0]": {'price_range[0]':'0'} }),
-      ...(to && { "price_range[1]": to }),
+      ...({ "price_range[0]": priceRange0}),
+      ...(priceRange1 && { "price_range[1]": priceRange1 }),
     };
 
     return Object.fromEntries(
@@ -34,7 +33,6 @@ function useProductsBody() {
   const products = data?.products?.data;
   const categories = productsData?.categories || [];
   const totalPages = productsData?.products?.last_page || 1;
-
   const currentPage = mySearchParams.page;
 
   const setCurrentPage = (page) => {
@@ -43,17 +41,16 @@ function useProductsBody() {
 
   const handleChangeParams = (newParams) => {
     // filter params by empty values
+    const {price_range}=newParams
     const filteredParams = Object.fromEntries(
       Object.entries(newParams).filter(([, value]) => value)
     );
-    const{from,to} =filteredParams
-    searchParams.set('price_range[0]',from || '0')
-    to && searchParams.set('price_range[1]',to)
-    setMySearchParams({ ...filteredParams,
-      ...( { "price_range[0]": from || '0' }),
-      ...(to && { "price_range[1]": to }), });
+    const filteredNewParams = {...filteredParams,'price_range[0]':price_range[0],'price_range[1]':price_range[1]}
+
+
+    setMySearchParams({ ...filteredNewParams})
 // update searchparams value 
-    Object.entries(newParams).forEach(([key, value]) => {
+    Object.entries(filteredNewParams).forEach(([key, value]) => {
       if (value) {
         searchParams.set(key, value);
       } else {
@@ -61,7 +58,7 @@ function useProductsBody() {
       }
     });
 
-    console.log('searchParams',searchParams)// update searchparams
+    console.log('filteredParams',searchParams,filteredParams)// update searchparams
     setSearchParams(searchParams);
   };
 
@@ -83,8 +80,8 @@ function useProductsBody() {
   } = useForm({
     mode: "onTouched",
     defaultValues: {
-      from: from,
-      to: to,
+      'price_range[0]': priceRange1,
+      'price_range[1]': priceRange1,
       category_id: category_id,
       is_active: is_active,
       search,

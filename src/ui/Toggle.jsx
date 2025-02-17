@@ -1,6 +1,6 @@
 const Toggle = ({ label, register, name, defaultChecked = false }) => {
   return (
-    <label htmlFor={name} className="flex items-center cursor-pointer">
+    <label htmlFor={name} className="flex items-center mt-1 cursor-pointer">
       {/* Toggle Wrapper */}
       <div className="relative w-12 h-6">
         {/* Hidden Checkbox */}

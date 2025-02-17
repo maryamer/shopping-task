@@ -55,7 +55,7 @@ function FilterProductModal({
             <TextField
               className="w-full"
               label="From"
-              name="from"
+              name="price_range[0]"
               placeholder="Enter Price"
               errors={errors}
               register={register}
@@ -65,7 +65,7 @@ function FilterProductModal({
             <TextField
               className="w-full"
               label="To"
-              name="to"
+              name="price_range[1]"
               placeholder="Enter Price"
               errors={errors}
               register={register}
