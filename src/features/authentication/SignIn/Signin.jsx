@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../../../ui/Button";
 import { AiOutlineMail } from "react-icons/ai";
-import {  useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import Logo from "../../../ui/Logo";
 import Cookies from "js-cookie"; // Import js-cookie
@@ -53,11 +53,11 @@ function SinginForm() {
       console.log(user, "user");
       Cookies.set("Authorization", `Bearer ${token}`, { expires: 4 / 24 }); // Expires in 1 hour
       toast.success("Successfully logged in!");
-       navigate("/admin/category");
-
+      navigate("/admin/category");
+      window.location.reload();
     } catch (err) {
       console.error("Login failed:", err.response?.data?.message);
-      toast.error("Login failed:"+ err.response?.data?.message)
+      toast.error("Login failed:" + err.response?.data?.message);
       setError("Login failed. Please try again.");
     } finally {
       setIsLoading(false); // Stop loading

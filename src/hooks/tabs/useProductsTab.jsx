@@ -5,10 +5,22 @@ import { useForm } from "react-hook-form";
 
 function useProductsBody() {
   const [searchParams, setSearchParams] = useSearchParams();
- const filter = ["is_active", "category_id", "search", "page", "price_range[0]", "price_range[1]"];
-const [is_active, category_id, search, defaultPage, priceRange0, priceRange1] = filter.map(
-  (param) => searchParams.get(param)
-);
+  const filter = [
+    "is_active",
+    "category_id",
+    "search",
+    "page",
+    "price_range[0]",
+    "price_range[1]",
+  ];
+  const [
+    is_active,
+    category_id,
+    search,
+    defaultPage,
+    priceRange0,
+    priceRange1,
+  ] = filter.map((param) => searchParams.get(param));
 
   const [mySearchParams, setMySearchParams] = useState(() => {
     const params = {
@@ -16,7 +28,7 @@ const [is_active, category_id, search, defaultPage, priceRange0, priceRange1] = 
       is_active: is_active,
       category_id,
       search,
-      ...({ "price_range[0]": priceRange0}),
+      ...{ "price_range[0]": priceRange0 },
       ...(priceRange1 && { "price_range[1]": priceRange1 }),
     };
 
@@ -41,15 +53,18 @@ const [is_active, category_id, search, defaultPage, priceRange0, priceRange1] = 
 
   const handleChangeParams = (newParams) => {
     // filter params by empty values
-    const {price_range}=newParams
+    const { price_range } = newParams;
     const filteredParams = Object.fromEntries(
       Object.entries(newParams).filter(([, value]) => value)
     );
-    const filteredNewParams = {...filteredParams,'price_range[0]':price_range[0],'price_range[1]':price_range[1]}
+    const filteredNewParams = {
+      ...filteredParams,
+      "price_range[0]": price_range[0],
+      "price_range[1]": price_range[1],
+    };
 
-
-    setMySearchParams({ ...filteredNewParams})
-// update searchparams value 
+    setMySearchParams({ ...filteredNewParams });
+    // update searchparams value
     Object.entries(filteredNewParams).forEach(([key, value]) => {
       if (value) {
         searchParams.set(key, value);
@@ -58,7 +73,7 @@ const [is_active, category_id, search, defaultPage, priceRange0, priceRange1] = 
       }
     });
 
-    console.log('filteredParams',searchParams,filteredParams)// update searchparams
+    console.log("filteredParams", searchParams, filteredParams); // update searchparams
     setSearchParams(searchParams);
   };
 
@@ -80,8 +95,8 @@ const [is_active, category_id, search, defaultPage, priceRange0, priceRange1] = 
   } = useForm({
     mode: "onTouched",
     defaultValues: {
-      'price_range[0]': priceRange1,
-      'price_range[1]': priceRange1,
+      "price_range[0]": priceRange1,
+      "price_range[1]": priceRange1,
       category_id: category_id,
       is_active: is_active,
       search,

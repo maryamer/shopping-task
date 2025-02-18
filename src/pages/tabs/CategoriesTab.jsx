@@ -16,7 +16,7 @@ function CategoriesTab() {
         title={"Category"}
         breadcrumbs={[{ active: true, label: "Category", href: "/category" }]}
       />
-      <CategoriesBody />
+      <CategoriesBody setOpen={setOpen} />
     </>
   );
 }

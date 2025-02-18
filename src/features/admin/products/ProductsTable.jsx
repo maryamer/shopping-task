@@ -17,16 +17,28 @@ export default function ProductsTable({ body, footer, setOpen, children }) {
           </button>
         </div>
       </div>
- 
+
       <div className="overflow-x-auto h-[50vh] max-w-[98vw]">
-        <table className="w-full table-auto border-collapse">
+        <table
+          className={`${!body && "h-full"} w-full   table-auto border-collapse`}
+        >
           <thead className="bg-gray-100">
             <tr>
-              <th className="th min-w-[150px] whitespace-nowrap px-4 py-2 text-left">Product Name</th>
-              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left">Price</th>
-              <th className="th min-w-[120px] whitespace-nowrap px-4 py-2 text-left">Category</th>
-              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left">Status</th>
-              <th className="th min-w-[150px] whitespace-nowrap px-4 py-2 text-left">Date</th>
+              <th className="th min-w-[150px] whitespace-nowrap px-4 py-2 text-left">
+                Product Name
+              </th>
+              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left">
+                Price
+              </th>
+              <th className="th min-w-[120px] whitespace-nowrap px-4 py-2 text-left">
+                Category
+              </th>
+              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left">
+                Status
+              </th>
+              <th className="th min-w-[150px] whitespace-nowrap px-4 py-2 text-left">
+                Date
+              </th>
               <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left"></th>
             </tr>
           </thead>

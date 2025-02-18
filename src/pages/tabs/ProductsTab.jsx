@@ -3,10 +3,10 @@ import { useState } from "react";
 import ProductsActionModal from "../../features/admin/products/ProductsActionModal";
 import HeaderContainer from "../../ui/HeaderContainer";
 import ProductsBody from "../../features/admin/products/ProductsBody";
-import useProductsTab from '../../hooks/tabs/useProductsTab'
+import useProductsTab from "../../hooks/tabs/useProductsTab";
 function ProductsTab() {
   const [open, setOpen] = useState(false);
-   const props = useProductsTab();
+  const props = useProductsTab();
 
   return (
     <>
@@ -22,8 +22,8 @@ function ProductsTab() {
         title={"Products"}
         breadcrumbs={[{ active: true, label: "Products", href: "/products" }]}
       />
-      <div className="px-1">
-        <ProductsBody {...props} />
+      <div className="px-1 h-full">
+        <ProductsBody {...props} setOpen={setOpen} />
       </div>
     </>
   );

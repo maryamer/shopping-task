@@ -138,9 +138,8 @@ body {
   user-select: none;
   background-color: rgb(var(--background-app-rgb));
 }
-option{
+option {
   font-family: "Vazir" !important;
-
 }
 
 * {

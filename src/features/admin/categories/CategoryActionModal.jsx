@@ -22,6 +22,7 @@ function CategoryActionModal({ id, open, setOpen, title }) {
     useAddCategory();
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -40,12 +41,13 @@ function CategoryActionModal({ id, open, setOpen, title }) {
       await addCategory(title); // Same here
     }
     setOpen(false);
+    reset();
   };
 
   return (
     <Modal
       className={""}
-      title="Add New Product"
+      title="Add New Category"
       open={open}
       onClose={() => setOpen(false)}
     >

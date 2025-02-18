@@ -1,25 +1,17 @@
 import { useState } from "react";
-
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { HiOutlineTrash } from "react-icons/hi";
 import { MdOutlineModeEditOutline } from "react-icons/md";
-
 import CategoryActionModal from "../categories/CategoryActionModal";
-
-import { IoIosInformationCircleOutline } from "react-icons/io";
 import useCategories, {
   useRemoveCategory,
 } from "../../../hooks/tabs/useCategories";
 import Loading from "../../../ui/Loading";
 import NotFoundAnyItem from "../../../ui/NotFoundAnyItem";
-import Modal from "../../../ui/Modal";
 import ConfirmDelete from "../../../ui/ConfirmDelete";
 
-
-function CategoriesBody() {
+function CategoriesBody({ setOpen }) {
   const [currentPage, setCurrentPage] = useState(1);
-
-
 
   // Pass currentPage to the hook
   const { data, isLoading } = useCategories(currentPage); // Pass currentPage to the hook
@@ -32,7 +24,7 @@ function CategoriesBody() {
       setCurrentPage(page);
     }
   };
-
+  console.log("cattta", categories);
   const renderPageButtons = () => {
     const startPage = Math.max(1, currentPage - 2);
     const endPage = Math.min(totalPages, currentPage + 2);
@@ -61,17 +53,13 @@ function CategoriesBody() {
 
   const renderCategoriesList = () => {
     if (isLoading) return <Loading />;
-    if (!categories?.length)
-      return (
-        <div className="h-full pb-24">
-          <NotFoundAnyItem />
-        </div>
-      );
+    if (!categories?.length && totalPages !== 1)
+      return <NotFoundAnyItem onAdd={() => setOpen(true)} title={"Category"} />;
 
     return (
       <div className="  mt-8  w-full">
-        <div className="h-[55vh] md:h-[40vh] lg:h-full grid md:grid-cols-2 gap-3 lmd:gap-4  overflow-y-auto">
-          {categories.map((category) => (
+        <div className="h-[55vh] md:h-[40vh] lg:h-full flex flex-col md:grid md:grid-cols-2 gap-3 md:gap-4  overflow-y-auto">
+          {categories?.map((category) => (
             <CategoryCard
               currentPage={currentPage}
               key={category.id}
@@ -79,12 +67,14 @@ function CategoriesBody() {
             />
           ))}
         </div>
-        <PaginationCard
-          currentPage={currentPage}
-          handlePageChange={handlePageChange}
-          renderPageButtons={renderPageButtons}
-          totalPages={totalPages}
-        />
+        {totalPages > 1 && (
+          <PaginationCard
+            currentPage={currentPage}
+            handlePageChange={handlePageChange}
+            renderPageButtons={renderPageButtons}
+            totalPages={totalPages}
+          />
+        )}
       </div>
     );
   };
@@ -155,31 +145,25 @@ function CategoryCard({ category, currentPage }) {
         id={category.id}
         title={category.title}
       />
-      <Modal
-        title={
-          <IoIosInformationCircleOutline className="text-red-500 w-12 h-12 bg-red-200 rounded-full p-2.5" />
-        }
+
+      <ConfirmDelete
         open={openDelete}
+        isLoading={isPending}
+        resourceName={category.title}
+        desc={
+          "Are you sure you want to delete this category? all subcategory of this category will deleted !"
+        }
         onClose={() => setOpenDelete(false)}
-      >
-        <ConfirmDelete
-          isLoading={isPending}
-          resourceName={category.title}
-          desc={
-            "Are you sure you want to delete this category? all subcategory of this category will deleted !"
+        onConfirm={async () => {
+          try {
+            await remove(category?.id);
+            setOpenDelete(false);
+          } catch (error) {
+            setOpenDelete(false);
           }
-          onClose={() => setOpenDelete(false)}
-          onConfirm={async () => {
-            try {
-              await remove(category?.id);
-              setOpenDelete(false);
-            } catch (error) {
-              setOpenDelete(false);
-            }
-          }}
-          disabled={false}
-        />
-      </Modal>
+        }}
+        disabled={false}
+      />
       <span className="font-semibold flex items-center">{category.title}</span>
       <div className="space-x-3">
         <button

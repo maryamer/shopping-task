@@ -6,12 +6,13 @@ import { useForm } from "react-hook-form";
 import { useAddProduct, useUpdateProduct } from "./useProducts";
 
 const schema = yup.object({
-  title: yup.string().required("Please Enter Category Name"),
+  title: yup.string().required("Please Enter Product Name"),
   price: yup.number().required("Please Enter Product Price").positive().min(1),
   category_id: yup.string().required("Please Select a Category"),
 });
-function useActionModal({categories,id,selectedProduct,setOpen}) {
-     const { mutateAsync: UpdateProduct, isPending: isPendingEdit } = useUpdateProduct();
+function useProductsActionModal({ categories, id, selectedProduct, setOpen }) {
+  const { mutateAsync: UpdateProduct, isPending: isPendingEdit } =
+    useUpdateProduct();
   const { mutateAsync: addProduct, isPending: isPendingAdd } = useAddProduct();
   const categoryOptions =
     categories?.map((item) => ({
@@ -19,7 +20,13 @@ function useActionModal({categories,id,selectedProduct,setOpen}) {
       value: item?.id,
     })) || [];
 
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    setValue,
+  } = useForm({
     resolver: yupResolver(schema),
     mode: "onTouched",
     defaultValues: selectedProduct || {
@@ -94,13 +101,25 @@ function useActionModal({categories,id,selectedProduct,setOpen}) {
       }
 
       setOpen(false);
+      reset();
+      setImage(null);
     } catch (error) {
       console.error("Error submitting data:", error);
       toast.error("Error submitting data. Please try again.");
     }
   };
 
-  return {handleSubmit,isLoading:isPendingAdd ||isPendingEdit,onSubmit,image,setImage,setValue,register,categoryOptions,errors}
+  return {
+    handleSubmit,
+    isLoading: isPendingAdd || isPendingEdit,
+    onSubmit,
+    image,
+    setImage,
+    setValue,
+    register,
+    categoryOptions,
+    errors,
+  };
 }
 
-export default useActionModal
+export default useProductsActionModal;

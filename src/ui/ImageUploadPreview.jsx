@@ -1,4 +1,3 @@
-
 import { BiTrash } from "react-icons/bi";
 
 const ImageUploadAndPreview = ({ image, setImage, setValue }) => {
@@ -21,7 +20,10 @@ const ImageUploadAndPreview = ({ image, setImage, setValue }) => {
 
   return (
     <div>
-      <div className="border border-dashed flex items-center justify-center aspect-video p-4 rounded-md mt-4">
+      <label
+        htmlFor="image-upload"
+        className="border cursor-pointer border-dashed flex items-center justify-center aspect-video p-4 rounded-md mt-4"
+      >
         <input
           type="file"
           accept="image/*"
@@ -30,15 +32,16 @@ const ImageUploadAndPreview = ({ image, setImage, setValue }) => {
           id="image-upload"
           disabled={!!image} // Prevent upload if an image is set
         />
-        <label
-          htmlFor="image-upload"
-          className={`cursor-pointer w-full ${image ? "opacity-50 cursor-not-allowed" : ""}`}
+        <div
+          className={`cursor-pointer w-full ${
+            image ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
           <div className="text-center text-secondary-500">
             {image ? "Image uploaded" : "Click to upload an image"}
           </div>
-        </label>
-      </div>
+        </div>
+      </label>
 
       {image && (
         <div className="mt-4 border rounded-md p-2 shadow-md">

@@ -2,7 +2,6 @@ import { HiPlus } from "react-icons/hi";
 import Breadcrumbs from "./Breadcrumbs";
 import Button from "./Button";
 
-
 function HeaderContainer({
   desc,
   btnTitle,
@@ -10,13 +9,12 @@ function HeaderContainer({
   title,
   breadcrumbs = [],
 }) {
-
   const { isLoading } = {};
 
   return (
     <div className="bg-secondary-100  lg:py-4  relative">
       <div
-        className={`lg:container flex flex-col items-center justify-end gap-x-8
+        className={`lg:px-10 flex flex-col items-center justify-end gap-x-8
       ${isLoading ? "blur-sm opacity-50" : ""}
       `}
       >
@@ -40,7 +38,6 @@ function HeaderContainer({
         <div className="w-full py-2">
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
-  
       </div>
       <span className="hr w-[99%] "></span>
     </div>
