@@ -3,7 +3,7 @@ import useGetProducts from "./useProducts";
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-function useProductsBody() {
+function useProductsBody({ setFilterOpen }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = [
     "is_active",
@@ -28,7 +28,7 @@ function useProductsBody() {
       is_active: is_active,
       category_id,
       search,
-      ...{ "price_range[0]": priceRange0 },
+      ...{ "price_range[0]": priceRange0 || 0 },
       ...(priceRange1 && { "price_range[1]": priceRange1 }),
     };
 
@@ -37,7 +37,7 @@ function useProductsBody() {
     );
   });
   const [open, setOpen] = useState(false);
-
+  console.log("mySearchParams", mySearchParams);
   const { data, isLoading, isPending, refetch } = useGetProducts({
     ...mySearchParams,
   });
@@ -53,33 +53,42 @@ function useProductsBody() {
 
   const handleChangeParams = (newParams) => {
     // filter params by empty values
-    const { price_range } = newParams;
-    const filteredParams = Object.fromEntries(
-      Object.entries(newParams).filter(([, value]) => value)
-    );
-    const filteredNewParams = {
-      ...filteredParams,
-      "price_range[0]": price_range[0],
-      "price_range[1]": price_range[1],
-    };
+    if (newParams) {
+      const { price_range } = newParams || {};
+      let filteredParams = Object.fromEntries(
+        Object.entries(newParams).filter(([, value]) => value)
+      );
 
-    setMySearchParams({ ...filteredNewParams });
-    // update searchparams value
-    Object.entries(filteredNewParams).forEach(([key, value]) => {
-      if (value) {
-        searchParams.set(key, value);
-      } else {
-        searchParams.delete(key);
+      if (price_range?.[1]) {
+        filteredParams = {
+          ...filteredParams,
+          "price_range[0]": price_range?.[0] || 0,
+          "price_range[1]": price_range?.[1],
+        };
       }
-    });
+      delete filteredParams.price_range;
 
-    console.log("filteredParams", searchParams, filteredParams); // update searchparams
-    setSearchParams(searchParams);
+      // update searchparams value
+      Object.entries(filteredParams).forEach(([key, value]) => {
+        if (value) {
+          if (key !== "price_range") searchParams.set(key, value);
+        } else {
+          searchParams.delete(key);
+        }
+      });
+      setMySearchParams(filteredParams);
+      setSearchParams(searchParams);
+    } else {
+      // clear search
+      setMySearchParams({});
+      setSearchParams(new URLSearchParams());
+    }
   };
 
   useEffect(() => {
     // refetch data after search params change
     refetch();
+    setFilterOpen(false);
   }, [mySearchParams]);
 
   const categoryOptions =
@@ -92,25 +101,51 @@ function useProductsBody() {
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
     mode: "onTouched",
     defaultValues: {
-      "price_range[0]": priceRange1,
+      "price_range[0]": priceRange0,
       "price_range[1]": priceRange1,
       category_id: category_id,
       is_active: is_active,
-      search,
+      search: "",
     },
   });
-  // useEffect(() => {
-  //   setValue("from", from);
-  //   setValue("category_id", category_id);
-  //   setValue("search", search);
-  // }, []);
+
   const onSubmit = (value) => {
     handleChangeParams(value);
     setOpen(false);
   };
+  const resetForm = () => {
+    reset({
+      "price_range[0]": "",
+      "price_range[1]": "",
+      category_id: "",
+      is_active: "",
+    });
+
+    // Optional: Clear search params if needed
+    setMySearchParams({});
+    setSearchParams(new URLSearchParams());
+    setOpen(false);
+
+    console.log("Form Reset Triggered");
+  };
+  const resetSearch = () => {
+    reset({
+      search: "",
+    });
+    const { search, ...rest } = mySearchParams || {};
+    // Optional: Clear search params if needed
+    setMySearchParams(rest);
+    searchParams.delete("search");
+    setSearchParams(searchParams);
+    // setOpen(false);
+
+    console.log("Form Reset Triggered");
+  };
+
   return {
     handleChangeParams,
     setCurrentPage,
@@ -123,14 +158,19 @@ function useProductsBody() {
     totalPages,
     open,
     refetch,
-    onSubmit,
-    categoryOptions: [{ label: "all", value: "" }, ...categoryOptions],
-    errors,
-    setValue,
-    register,
-    handleSubmit,
+    categoryOptions: [...categoryOptions],
     setOpen,
     searchParams,
+    useFormProps: {
+      resetFilterForm: () => resetForm(),
+      reset,
+      resetSearch,
+      setValue,
+      errors,
+      handleSubmit,
+      register,
+      onSubmit,
+    },
   };
 }
 

@@ -22,7 +22,7 @@ const ImageUploadAndPreview = ({ image, setImage, setValue }) => {
     <div>
       <label
         htmlFor="image-upload"
-        className="border cursor-pointer border-dashed flex items-center justify-center aspect-video p-4 rounded-md mt-4"
+        className="border cursor-pointer border-dashed flex items-center justify-center aspect-video p-4 rounded-md "
       >
         <input
           type="file"

@@ -14,7 +14,7 @@ function NotFoundAnyItem({ title, onAdd }) {
       </h1>
       <Button
         size={"md"}
-        onClick={() => onAdd()}
+        onClick={onAdd}
         className="btn flex gap-1 font-light items-center justify-center  btn--primary !rounded-lg "
       >
         <HiPlus className="text-white w-5" /> Add {title}

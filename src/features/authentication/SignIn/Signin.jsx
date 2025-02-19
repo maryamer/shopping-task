@@ -10,7 +10,9 @@ import toast from "react-hot-toast";
 import Logo from "../../../ui/Logo";
 import Cookies from "js-cookie"; // Import js-cookie
 import http from "../../../services/httpService";
+import { useAuth } from "../../../context/useAuthStore";
 
+// Validation schema
 const schema = yup
   .object({
     email: yup.string().email().required("Please Enter Your Email"),
@@ -18,19 +20,11 @@ const schema = yup
   })
   .required();
 
-function SinginForm() {
-  // const [isFirst, setIsFirst] = useState(true);
+function SigninForm() {
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (!isFirst) {
-  //     setTimeout(() => {
-  //       navigate("/admin/category");
-  //     }, 1000);
-  //   }
-  // }, [isFirst]);
-  const [isLoading, setIsLoading] = useState(false); // State for loading
-  const [error, setError] = useState(null); // State for errors
-  console.log(error);
+  const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useAuth(); // Get setUser function from Zustand
+
   const {
     register,
     handleSubmit,
@@ -39,7 +33,6 @@ function SinginForm() {
 
   const onSubmit = async (values) => {
     setIsLoading(true);
-    setError(null);
 
     try {
       const response = await http.post(
@@ -47,20 +40,26 @@ function SinginForm() {
         values
       );
       console.log("Login success:", response.data);
-      const { token } = response?.data || {};
-      const { user } = response?.data || {};
-      user && localStorage.setItem("userInfo", JSON.stringify(user));
-      console.log(user, "user");
-      Cookies.set("Authorization", `Bearer ${token}`, { expires: 4 / 24 }); // Expires in 1 hour
+
+      const { token, user } = response?.data || {};
+
+      if (user) {
+        Cookies.set("user", JSON.stringify(user), { expires: 1 }); // Store user data in cookies for 1 day
+        setUser(user); // Update Zustand state
+      }
+
+      if (token) {
+        Cookies.set("Authorization", `Bearer ${token}`, { expires: 1 }); // Store token securely
+      }
+
       toast.success("Successfully logged in!");
       navigate("/admin/category");
       window.location.reload();
     } catch (err) {
       console.error("Login failed:", err.response?.data?.message);
-      toast.error("Login failed:" + err.response?.data?.message);
-      setError("Login failed. Please try again.");
+      toast.error("Login failed: " + err.response?.data?.message);
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);
     }
   };
 
@@ -76,14 +75,14 @@ function SinginForm() {
             icon={<AiOutlineMail className="w-5 h-5 text-secondary-400" />}
             label="Email Address"
             name="email"
-            placeholder={"Type Here"}
+            placeholder="Type Here"
             errors={errors}
             register={register}
             type="email"
           />
           <TextField
             label="Password"
-            placeholder={"Type Here"}
+            placeholder="Type Here"
             name="password"
             errors={errors}
             register={register}
@@ -95,25 +94,24 @@ function SinginForm() {
             <Link className="link">conditions</Link> of use of Apin and its
             privacy policy.
           </p>
-          <div className="">
+          <div>
             {isLoading ? (
               <Button
                 type="button"
                 className="py-3 px-4 btn btn--primary rounded-md w-full"
               >
-                Loading...{" "}
+                Loading...
               </Button>
             ) : (
               <Button
                 type="submit"
                 className="py-3 px-4 btn btn--primary rounded-md w-full"
               >
-                Submit{" "}
+                Submit
               </Button>
             )}
           </div>
         </form>
-
         <Link
           to="/signup"
           className="text-secondary-400 text-sm w-full flex items-center justify-center mt-2 hover:text-primary-500 text-center"
@@ -125,4 +123,4 @@ function SinginForm() {
   );
 }
 
-export default SinginForm;
+export default SigninForm;

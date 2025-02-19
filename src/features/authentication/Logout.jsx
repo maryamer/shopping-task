@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 function Logout() {
   const [isFirst, setIsFirst] = useState(true);
-  
+
   useEffect(() => {
     const token = Cookies.get("Authorization");
     if (!token && !isFirst) {
@@ -20,7 +20,7 @@ function Logout() {
   const navigate = useNavigate();
   const handlelogout = () => {
     Cookies.remove("Authorization");
-    localStorage.removeItem("userInfo");
+    Cookies.remove("user");
     queryClient.removeQueries();
     setIsFirst(false);
   };

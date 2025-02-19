@@ -1,7 +1,7 @@
 import Modal from "../../../ui/Modal";
 import Button from "../../../ui/Button";
 import ProductForm from "./ProductForm";
-import useProductsActionModals from "../../../hooks/tabs/useProductsActionModal";
+import useActionModal from "../../../hooks/tabs/useActionModal";
 import ImageUploadAndPreview from "../../../ui/ImageUploadPreview";
 
 const ProductsActionModal = ({
@@ -9,7 +9,7 @@ const ProductsActionModal = ({
   id,
   open,
   setOpen,
-  categories = [],
+  categories,
 }) => {
   const {
     handleSubmit,
@@ -21,15 +21,14 @@ const ProductsActionModal = ({
     register,
     categoryOptions,
     errors,
-  } = useProductsActionModals({ categories, id, selectedProduct, setOpen });
-
+  } = useActionModal({ categories, id, selectedProduct, setOpen });
   return (
     <Modal
       title={selectedProduct ? "Edit Product" : "Add New Product"}
       open={open}
       onClose={() => setOpen(false)}
     >
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <ImageUploadAndPreview
           image={image}
           setImage={setImage}

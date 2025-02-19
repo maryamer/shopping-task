@@ -82,11 +82,14 @@
   .link {
     @apply text-primary-800;
   }
+  .center-flex {
+    @apply flex items-center justify-center;
+  }
   .td {
-    @apply px-4 py-2 text-left text-secondary-800;
+    @apply px-4 py-2 text-left text-secondary-800 xl:text-lg;
   }
   .th {
-    @apply px-4 py-2 text-left text-secondary-800;
+    @apply px-4 py-2 text-left text-secondary-800 xl:text-lg;
   }
   .hr {
     @apply absolute bottom-0 -translate-x-1/2 left-1/2 inline-block mx-auto  border-b-2 border-secondary-200;

@@ -17,6 +17,7 @@ This project is a front-end application for a User Management System with functi
 - **Tailwind CSS**: For styling and responsive design.
 - **ApexChart** For visualizing recent order data.
 - **Vite**: For bundling and fast development.
+- **React Hook Form**: For handling form data and validation.
 
 ## Installation
 

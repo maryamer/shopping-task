@@ -5,9 +5,9 @@ import { BsShopWindow, BsBag } from "react-icons/bs";
 import UserAvatar from "../features/authentication/UserAvatar";
 import UserDetail from "../features/authentication/UserDetail";
 import Logout from "../features/authentication/Logout";
-import useUser from "../features/authentication/useUser";
+import { useAuth } from "../context/useAuthStore";
 function Sidebar({ children, isOpen, setIsOpen }) {
-  const { user } = useUser();
+  const { user } = useAuth();
   return (
     <>
       <div
@@ -49,7 +49,7 @@ function Sidebar({ children, isOpen, setIsOpen }) {
         </ul>
         <div className=" w-full flex gap-2 items-center relative bottom-2">
           <div className=" ">
-            <UserAvatar />
+            <UserAvatar user={user} />
           </div>
           <UserDetail name={user?.name} email={user?.email} />
           <div className="absolute top-0 right-2">

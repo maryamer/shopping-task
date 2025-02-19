@@ -1,18 +1,12 @@
 import { useState } from "react";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import { HiOutlineTrash } from "react-icons/hi";
-import { MdOutlineModeEditOutline } from "react-icons/md";
-import CategoryActionModal from "../categories/CategoryActionModal";
-import useCategories, {
-  useRemoveCategory,
-} from "../../../hooks/tabs/useCategories";
+import useCategories from "../../../hooks/tabs/useCategories";
 import Loading from "../../../ui/Loading";
 import NotFoundAnyItem from "../../../ui/NotFoundAnyItem";
-import ConfirmDelete from "../../../ui/ConfirmDelete";
+import CategoryCard from "./CategoryCard";
 
 function CategoriesBody({ setOpen }) {
   const [currentPage, setCurrentPage] = useState(1);
-
   // Pass currentPage to the hook
   const { data, isLoading } = useCategories(currentPage); // Pass currentPage to the hook
   const categories = data?.categories?.data || [];
@@ -24,7 +18,7 @@ function CategoriesBody({ setOpen }) {
       setCurrentPage(page);
     }
   };
-  console.log("cattta", categories);
+
   const renderPageButtons = () => {
     const startPage = Math.max(1, currentPage - 2);
     const endPage = Math.min(totalPages, currentPage + 2);
@@ -53,13 +47,13 @@ function CategoriesBody({ setOpen }) {
 
   const renderCategoriesList = () => {
     if (isLoading) return <Loading />;
-    if (!categories?.length && totalPages !== 1)
-      return <NotFoundAnyItem onAdd={() => setOpen(true)} title={"Category"} />;
+    if (!categories?.length)
+      return <NotFoundAnyItem title={"Category"} onAdd={() => setOpen(true)} />;
 
     return (
       <div className="  mt-8  w-full">
-        <div className="h-[55vh] md:h-[40vh] lg:h-full flex flex-col md:grid md:grid-cols-2 gap-3 md:gap-4  overflow-y-auto">
-          {categories?.map((category) => (
+        <div className="h-[55vh] md:h-[40vh] lg:h-full grid md:grid-cols-2 gap-3 lmd:gap-4  overflow-y-auto">
+          {categories.map((category) => (
             <CategoryCard
               currentPage={currentPage}
               key={category.id}
@@ -121,65 +115,6 @@ export function PaginationCard({
       >
         Next <FaArrowRightLong />
       </button>
-    </div>
-  );
-}
-function CategoryCard({ category, currentPage }) {
-  const {
-    mutateAsync: remove,
-    isLoading,
-    isPending,
-  } = useRemoveCategory(category?.id, currentPage);
-  const [open, setOpen] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
-
-  return (
-    <div
-      className={`px-2 py-2.5 flex max-h-16 items-center text-sm justify-between rounded-md bg-white ${
-        (isLoading || isPending) && "opacity-50"
-      }`}
-    >
-      <CategoryActionModal
-        open={open}
-        setOpen={setOpen}
-        id={category.id}
-        title={category.title}
-      />
-
-      <ConfirmDelete
-        open={openDelete}
-        isLoading={isPending}
-        resourceName={category.title}
-        desc={
-          "Are you sure you want to delete this category? all subcategory of this category will deleted !"
-        }
-        onClose={() => setOpenDelete(false)}
-        onConfirm={async () => {
-          try {
-            await remove(category?.id);
-            setOpenDelete(false);
-          } catch (error) {
-            setOpenDelete(false);
-          }
-        }}
-        disabled={false}
-      />
-      <span className="font-semibold flex items-center">{category.title}</span>
-      <div className="space-x-3">
-        <button
-          className=" bg-secondary-100 rounded-md p-1"
-          onClick={() => setOpen(true)}
-        >
-          <MdOutlineModeEditOutline className="w-5 h-5 text-secondary-500" />
-        </button>
-        <button
-          className=" rounded-md p-1 bg-red-100"
-          onClick={() => setOpenDelete(true)}
-          // onClick={() => remove(category?.id)}
-        >
-          <HiOutlineTrash className="w-5 h-5 text-red-700" />
-        </button>
-      </div>
     </div>
   );
 }

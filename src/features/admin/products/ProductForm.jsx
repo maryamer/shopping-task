@@ -4,7 +4,7 @@ import Toggle from "../../../ui/Toggle";
 
 const ProductForm = ({ register, errors, categoryOptions }) => {
   return (
-    <div>
+    <div className="space-y-4">
       <RHFSelect
         name="category_id"
         label="Select a Category"

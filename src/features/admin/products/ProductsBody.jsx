@@ -1,9 +1,6 @@
 import ProductsTable from "../products/ProductsTable";
-import Loading from "../../../ui/Loading";
-import ProductsTableRow from "./ProductsTableRow";
-import Pagination from "../../../ui/Pagination";
 import FilterProductModal from "./FilterProductModal";
-import NotFoundAnyItem from "../../../ui/NotFoundAnyItem";
+import SearchField from "../../../ui/SearchField";
 
 function ProductsBody({
   setCurrentPage,
@@ -12,59 +9,36 @@ function ProductsBody({
   isPending,
   products,
   totalPages,
-  open,
   setOpen,
-  onSubmit,
   categoryOptions,
-  errors,
-  register,
-  handleSubmit,
   categories,
+  filterOpen,
+  setFilterOpen,
 }) {
   // if (isLoading || isPending) return <Loading />;
   const loading = isLoading || isPending;
-  if (!products?.length)
-    return <NotFoundAnyItem onAdd={() => setOpen(true)} title={"Product"} />;
   return (
-    <div>
+    <div className="px-1 h-full">
+      <div className="flex justify-between items-center p-4">
+        <div className="text-xl font-semibold">Product List</div>
+        <SearchField setOpen={setFilterOpen} />
+      </div>
       <ProductsTable
+        loading={loading}
+        products={products}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+        categoryOptions={categoryOptions}
+        currentPageLength={products?.length}
         setOpen={setOpen}
-        footer={
-          totalPages > 1 && (
-            <Pagination
-              totalPages={totalPages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          )
-        }
-        body={
-          loading ? (
-            <Loading />
-          ) : products.length ? (
-            products?.map((product) => (
-              <ProductsTableRow
-                currentPageLength={products.length}
-                totalPages={totalPages}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-                key={product?.id}
-                product={product}
-                categories={categories}
-              />
-            ))
-          ) : null
-        }
+        categories={categories}
       />
       {/* filter modal */}
       <FilterProductModal
-        open={open}
-        register={register}
-        handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
-        setOpen={setOpen}
+        open={filterOpen}
+        setOpen={setFilterOpen}
         categoryOptions={categoryOptions}
-        errors={errors}
       />{" "}
     </div>
   );

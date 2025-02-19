@@ -10,20 +10,18 @@ const schema = yup.object({
   price: yup.number().required("Please Enter Product Price").positive().min(1),
   category_id: yup.string().required("Please Select a Category"),
 });
-function useProductsActionModal({ categories, id, selectedProduct, setOpen }) {
+
+// this is a modal for add and edit product
+function useActionModal({ categories, id, selectedProduct, setOpen }) {
   const { mutateAsync: UpdateProduct, isPending: isPendingEdit } =
     useUpdateProduct();
   const { mutateAsync: addProduct, isPending: isPendingAdd } = useAddProduct();
-  const categoryOptions =
-    categories?.map((item) => ({
-      label: item?.title,
-      value: item?.id,
-    })) || [];
+  const categoryOptions = categories;
 
   const {
     register,
-    handleSubmit,
     reset,
+    handleSubmit,
     formState: { errors },
     setValue,
   } = useForm({
@@ -60,7 +58,7 @@ function useProductsActionModal({ categories, id, selectedProduct, setOpen }) {
         setValue("image", defaultImageLink);
       }
     }
-  }, [selectedProduct, setValue, categories]);
+  }, [selectedProduct, setValue]);
 
   const onSubmit = async (data) => {
     const { title, price, category_id, is_active, image } = data;
@@ -71,7 +69,11 @@ function useProductsActionModal({ categories, id, selectedProduct, setOpen }) {
     formData.append("is_active", is_active ? "1" : "0");
 
     if (image && typeof image !== "string") {
+      // console.log("image", image);
       formData.append("image", image);
+    }
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
     }
 
     try {
@@ -99,10 +101,9 @@ function useProductsActionModal({ categories, id, selectedProduct, setOpen }) {
       } else {
         await addProduct(formData);
       }
-
-      setOpen(false);
       reset();
       setImage(null);
+      setOpen(false);
     } catch (error) {
       console.error("Error submitting data:", error);
       toast.error("Error submitting data. Please try again.");
@@ -122,4 +123,4 @@ function useProductsActionModal({ categories, id, selectedProduct, setOpen }) {
   };
 }
 
-export default useProductsActionModal;
+export default useActionModal;

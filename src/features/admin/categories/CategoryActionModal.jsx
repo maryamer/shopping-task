@@ -22,8 +22,8 @@ function CategoryActionModal({ id, open, setOpen, title }) {
     useAddCategory();
   const {
     register,
-    reset,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -36,18 +36,27 @@ function CategoryActionModal({ id, open, setOpen, title }) {
 
     console.log("values", title, id);
     if (id) {
-      await UpdateCategory({ title, id }); // Ensure this finishes first
+      try {
+        await UpdateCategory({ title, id }); // Ensure this finishes first
+        reset();
+      } catch {
+        console.log("an err acuured");
+      }
     } else {
-      await addCategory(title); // Same here
+      try {
+        await addCategory(title); // Same here
+        reset();
+      } catch (error) {
+        console.log("an error accured");
+      }
     }
     setOpen(false);
-    reset();
   };
 
   return (
     <Modal
       className={""}
-      title="Add New Category"
+      title={!id ? "Add New Category" : "Edit Category"}
       open={open}
       onClose={() => setOpen(false)}
     >

@@ -2,7 +2,7 @@ import { HiOutlineTrash } from "react-icons/hi";
 import ToggleSwitch from "../../../ui/ToggleSwitch";
 import ProductsActionModal from "./ProductsActionModal";
 import ConfirmDelete from "../../../ui/ConfirmDelete";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   useRemoveProduct,
   useUpdateProduct,
@@ -11,36 +11,17 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 
 export default function ProductsTableRow({
   product,
-  categories,
+  categoryOptions,
   currentPage,
-  currentPageLength,
-  setCurrentPage,
   totalPages,
+  products,
+  setCurrentPage,
 }) {
   const [isActive, setIsActive] = useState(product.is_active);
   const [open, setOpen] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
-
-  const {
-    mutateAsync: remove,
-    isPending,
-    isSuccess: isSuccessRemove,
-  } = useRemoveProduct();
+  const { mutateAsync: remove, isPending } = useRemoveProduct();
   const { mutateAsync: toggle } = useUpdateProduct();
-
-  useEffect(() => {
-    isSuccessRemove &&
-      totalPages > 1 &&
-      currentPage > 1 &&
-      currentPageLength < 2 &&
-      setCurrentPage((prev) => prev - 1);
-    console.log(
-      "isSuccessRemove",
-      totalPages > 1,
-      currentPage > 1,
-      currentPageLength < 2
-    );
-  }, [isSuccessRemove]);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const toggleHandler = async () => {
     const { title, price, category_id, id, is_active } = product;
@@ -60,27 +41,36 @@ export default function ProductsTableRow({
     }
   };
 
+  const isLatItemOfCurrentPage =
+    currentPage > 1 && totalPages > 1 && products?.length < 2;
+  const handleRemoveProduct = async () => {
+    if (await remove(product?.id)) {
+      setOpenDelete(false),
+        // if page gets empty back to previous ge
+        isLatItemOfCurrentPage && setCurrentPage((prev) => prev - 1);
+    }
+  };
+
   return (
     <>
       <ConfirmDelete
-        open={openDelete}
         isLoading={isPending}
+        open={openDelete}
         resourceName={product.title}
         desc="Are you sure you want to delete this product?"
         onClose={() => setOpenDelete(false)}
-        onConfirm={async () => {
-          if (await remove(product?.id)) setOpenDelete(false);
-        }}
+        onConfirm={handleRemoveProduct}
       />
+
       <ProductsActionModal
-        categories={categories}
+        categories={categoryOptions || []}
         setOpen={setOpen}
         open={open}
         id={product.id}
         selectedProduct={product}
       />
 
-      <tr className="">
+      <tr>
         <td className="td min-w-[150px] px-4 py-2 whitespace-nowrap">
           <div className="flex items-center gap-2">
             <img
@@ -90,7 +80,7 @@ export default function ProductsTableRow({
                   : "/default-image.jpg"
               }
               alt={product.title}
-              className="w-10 h-10 object-cover rounded-lg"
+              className="w-10 h-10 xl:w-12 xl:h-12 object-cover rounded-lg"
             />
             <span className="truncate">{product?.title}</span>
           </div>

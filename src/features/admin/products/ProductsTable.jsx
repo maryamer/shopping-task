@@ -1,52 +1,72 @@
-import { CiSearch, CiFilter } from "react-icons/ci";
-export default function ProductsTable({ body, footer, setOpen, children }) {
+import Loading from "../../../ui/Loading";
+import NotFoundAnyItem from "../../../ui/NotFoundAnyItem";
+import Pagination from "../../../ui/Pagination";
+import ProductsTableRow from "./ProductsTableRow";
+
+export default function ProductsTable({
+  loading,
+  products,
+  currentPage,
+  setCurrentPage,
+  totalPages,
+  categoryOptions,
+  setOpen,
+}) {
   return (
     <div className="overflow-hidden relative mt-4 border border-secondary-200 rounded-xl">
-      {children}
-      <div className="flex justify-between items-center p-4">
-        <div className="text-xl font-semibold">Product List</div>
-        <div className="flex items-center gap-2">
-          <button className="px-2 py-2 text-sm text-secondary-600 shadow-sm border rounded-lg">
-            <CiSearch />
-          </button>
-          <button
-            onClick={() => setOpen((prev) => !prev)}
-            className="px-4 py-1.5 text-sm flex gap-2 items-center justify-center text-secondary-600 shadow-sm border rounded-lg"
+      <div className="overflow-x-auto h-[50vh] xl:h-[60vh] max-w-[98vw]">
+        {loading ? (
+          <Loading />
+        ) : products?.length ? (
+          <table
+            className={`${
+              products?.length < 1 && "h-full"
+            } w-full   table-auto border-collapse`}
           >
-            <CiFilter /> Filter
-          </button>
-        </div>
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="th min-w-[150px]">Product Name</th>
+                <th className="th min-w-[100px]">Price</th>
+                <th className="th min-w-[120px]">Category</th>
+                <th className="th min-w-[100px]">Status</th>
+                <th className="th min-w-[150px]">Date</th>
+                <th className="th min-w-[100px]"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {products?.map((product) => (
+                <ProductsTableRow
+                  products={products}
+                  currentPageLength={products.length}
+                  totalPages={totalPages}
+                  setCurrentPage={setCurrentPage}
+                  currentPage={currentPage}
+                  key={product?.id}
+                  product={product}
+                  categoryOptions={categoryOptions}
+                />
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <NotFoundAnyItem
+            title={"Product"}
+            onAdd={() => {
+              setOpen(true);
+            }}
+          />
+        )}
       </div>
 
-      <div className="overflow-x-auto h-[50vh] max-w-[98vw]">
-        <table
-          className={`${!body && "h-full"} w-full   table-auto border-collapse`}
-        >
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="th min-w-[150px] whitespace-nowrap px-4 py-2 text-left">
-                Product Name
-              </th>
-              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left">
-                Price
-              </th>
-              <th className="th min-w-[120px] whitespace-nowrap px-4 py-2 text-left">
-                Category
-              </th>
-              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left">
-                Status
-              </th>
-              <th className="th min-w-[150px] whitespace-nowrap px-4 py-2 text-left">
-                Date
-              </th>
-              <th className="th min-w-[100px] whitespace-nowrap px-4 py-2 text-left"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">{body}</tbody>
-        </table>
+      <div className="bg-secondary-0 p-2 text-center">
+        {totalPages > 1 && (
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
       </div>
-
-      <div className="bg-secondary-0 p-2 text-center">{footer}</div>
     </div>
   );
 }

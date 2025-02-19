@@ -9,13 +9,14 @@ import SignupPage from "./pages/SignupPage";
 import SigninPage from "./pages/SigninPage";
 import OrdersTab from "./pages/tabs/OrdersTab";
 import AppLayout from "./ui/AppLayout";
+import { AuthProvider } from "./context/useAuthStore";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
-
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />
         <Toaster />
         <HashRouter>
@@ -35,8 +36,8 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </HashRouter>
-      </QueryClientProvider>
-
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

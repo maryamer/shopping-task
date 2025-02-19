@@ -43,7 +43,7 @@ export function useAddProduct() {
       toast.error("Error adding product:" + error?.response?.data?.message); // Handle the error appropriately
     },
     onSuccess: () => {
-      queryClient.invalidateQueries([{ query: "products" }]);
+      queryClient.invalidateQueries();
       toast.success("product added successfully"); // Optionally handle success
     },
   });
